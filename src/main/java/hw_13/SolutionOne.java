@@ -1,7 +1,6 @@
 package hw_13;
 
 import lombok.Data;
-import lombok.experimental.var;
 
 import java.util.Scanner;
 
