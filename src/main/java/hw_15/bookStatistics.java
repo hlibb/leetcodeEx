@@ -1,6 +1,7 @@
 package hw_15;
 
 import java.io.*;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -14,14 +15,19 @@ public class bookStatistics {
         if (!stats.exists()) stats.createNewFile();
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
+        PrintWriter printWriter = new PrintWriter(stats);
 
         /*
-         Зроблено і працює по прикладу, який було показано на слідуючому після цього занятті (ГДЗ)
+         Зроблено і працює по прикладу, який було показано на слідуючому після цього занятті (ГДЗ) але з доробками
          */
 
-        /*Map.Entry<String, Long> wordMap;
+        File temp = new File("src/main/java/hw_15/temp.txt");
+        temp.createNewFile();
+        PrintWriter tempWriter = new PrintWriter(temp);
 
-        wordMap = bufferedReader.lines()
+        Map.Entry<String, Long> wordMap;
+
+        bufferedReader.lines()
                 .flatMap(s -> Arrays.stream(s.split(" ")))
                 .map(String::toLowerCase)
                 .map(String::trim)
@@ -32,20 +38,41 @@ public class bookStatistics {
                                 .replace(",", "")
                                 .replace(":", " ")
                                 .replace("-", "")
+                                .replace("[", " ")
+                                .replace("]", " ")
+                                .replace("(", "")
+                                .replace(")", "")
+                                .replace("»", "")
+                                .replace("«", "")
+                                .replace("…", "")
+                                .replace("„", "")
                 )
                 .filter(s -> {
                     return !s.contains("росс");
                 })
                 .filter(s -> s.length() > 3)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-                .entrySet()
-                .stream()
-                .reduce((s, c) -> s.getValue() > c.getValue() ? s : c)
-                .get();*/
+                .forEach((s, aLong) -> {
+                    tempWriter.write("--> " + s + " <-- " + aLong + "\n");
+                });
 
-        /* Моя спроба зробити через класс UniqueWords(String, Long) + WordsStorage який би при додаванні
+        FileReader fileReaderTemp = new FileReader(temp);
+        BufferedReader bufferedReaderStats = new BufferedReader(fileReaderTemp);
+        bufferedReaderStats.lines()
+                .sorted()
+                .forEach(s -> printWriter.write(s + "\n"));
+
+        temp.delete();
+
+                /*.entrySet()
+                .stream()
+                .sorted()
+                //.reduce((s, c) -> s.getValue() > c.getValue() ? s : c)
+                //.get();
+                .collect(Collectors.toList());
+
+ Моя спроба зробити через класс UniqueWords(String, Long) + WordsStorage який би при додаванні
         однакової строки додавав би до count + 1.
-        * */
 
         WordsStorage words = (WordsStorage) bufferedReader.lines()
         .flatMap(s -> Arrays.stream(s.split(" ")))
@@ -59,15 +86,11 @@ public class bookStatistics {
                                 .replace(":", " ")
                                 .replace("-", "")
                 )
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-
-        PrintWriter printWriter = new PrintWriter(stats);
-        String a = words.toString();
-        printWriter.write(a);
-        System.out.println(a);
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));*/
 
     }
 }
+/*
 class UniqueWords {
     String s;
     Long count;
@@ -117,4 +140,4 @@ class WordsStorage {
         }
         return "No objects in this string";
     }
-}
+}*/
