@@ -4,20 +4,24 @@ import java.io.*;
 import java.sql.SQLOutput;
 import java.util.*;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class bookStatistics {
+public class BookStatistics {
 
     public static void main(String[] args) throws IOException {
         File file = new File("src/main/java/hw_15/tolstoy_voyna-i-mir.txt");
-        File stats = new File("src/main/java/hw_15/stats.txt");
 
+        File stats = new File("src/main/java/hw_15/stats.txt");
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         PrintWriter printWriter = new PrintWriter(stats);
 
         File temp = new File("src/main/java/hw_15/temp.txt");
+        FileReader fileReaderTemp = new FileReader(temp);
+        BufferedReader bufferedReaderStats = new BufferedReader(fileReaderTemp);
         PrintWriter tempWriter = new PrintWriter(temp);
+
 
         Map.Entry<String, Long> wordMap;
 
@@ -36,8 +40,8 @@ public class bookStatistics {
                                 .replace("]", " ")
                                 .replace("(", "")
                                 .replace(")", "")
-                                .replace("»", "")
                                 .replace("«", "")
+                                .replace("»", "")
                                 .replace("…", "")
                                 .replace("„", "")
                 )
@@ -50,8 +54,6 @@ public class bookStatistics {
                     tempWriter.write("--> " + s + " <-- " + aLong + "\n");
                 });
 
-        FileReader fileReaderTemp = new FileReader(temp);
-        BufferedReader bufferedReaderStats = new BufferedReader(fileReaderTemp);
         bufferedReaderStats.lines()
                 .sorted()
                 .forEach(s -> printWriter.write(s + "\n"));
