@@ -23,9 +23,6 @@ public class BookStatistics {
         BufferedReader bufferedReaderStats = new BufferedReader(fileReaderTemp);
         PrintWriter tempWriter = new PrintWriter(temp);
 
-
-        Map.Entry<String, Long> wordMap;
-
         bufferedReader.lines()
                 .flatMap(s -> Arrays.stream(s.split(" ")))
                 .map(String::toLowerCase)
