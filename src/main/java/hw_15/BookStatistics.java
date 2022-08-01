@@ -18,6 +18,7 @@ public class BookStatistics {
         PrintWriter printWriter = new PrintWriter(stats);
 
         File temp = new File("src/main/java/hw_15/temp.txt");
+        System.out.println(temp.createNewFile());
         FileReader fileReaderTemp = new FileReader(temp);
         BufferedReader bufferedReaderStats = new BufferedReader(fileReaderTemp);
         PrintWriter tempWriter = new PrintWriter(temp);
@@ -57,6 +58,9 @@ public class BookStatistics {
         bufferedReaderStats.lines()
                 .sorted()
                 .forEach(s -> printWriter.write(s + "\n"));
-
+        bufferedReaderStats.close();
+        fileReaderTemp.close();
+        tempWriter.close();
+        System.out.println(temp.delete());
     }
 }
